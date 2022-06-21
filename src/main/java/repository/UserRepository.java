@@ -1,2 +1,4 @@
-package repository;public class UserRepository {
+package repository;
+
+public class UserRepository {
 }

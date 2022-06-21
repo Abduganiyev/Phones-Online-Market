@@ -1,2 +1,6 @@
-package services.implement;public class CategoryServiceImp {
+package services.implement;
+
+import services.CategoryService;
+
+public class CategoryServiceImp implements CategoryService {
 }

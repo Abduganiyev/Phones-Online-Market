@@ -1,2 +1,4 @@
-package services;public interface CategoryService {
+package services;
+
+public interface CategoryService {
 }

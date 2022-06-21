@@ -1,2 +1,4 @@
-package services;public interface ProductService {
+package services;
+
+public interface ProductService {
 }

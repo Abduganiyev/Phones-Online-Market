@@ -1,2 +1,6 @@
-package services.implement;public class UserServiceImp {
+package services.implement;
+
+import services.UserService;
+
+public class UserServiceImp implements UserService {
 }

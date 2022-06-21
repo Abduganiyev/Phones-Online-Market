@@ -1,2 +1,6 @@
-package services.implement;public class ProductServiceImp {
+package services.implement;
+
+import services.ProductService;
+
+public class ProductServiceImp implements ProductService {
 }

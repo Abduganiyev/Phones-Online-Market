@@ -1,2 +1,4 @@
-package repository;public interface CategoryRepository {
+package repository;
+
+public interface CategoryRepository {
 }

@@ -1,2 +1,4 @@
-package services;public interface UserService {
+package services;
+
+public interface UserService {
 }
