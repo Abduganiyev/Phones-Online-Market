@@ -2,109 +2,109 @@
   {
     "name": "Iphone Se",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-12-00"
   },
   {
     "name": "Iphone X",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-12-00"
   },
   {
     "name": "Iphone 13 Pro",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-12-00"
   },
   {
     "name": "AirPods 3",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "AirPods Pro",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "AirPods Max",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Apple Watch Seria 7",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Apple Watch Se",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Apple Watch Nike",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Galaxy S22",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Galaxy Z Flip 3",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Galaxy Bespoke",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Xiomi 11 Lite 5G Ne",
     "categoryId": "10",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Xiomi 11 Pro",
     "categoryId": "10",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Mi 11 ultra",
     "categoryId": "10",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Redmi 11 Pro 5G",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Redmi Note 11",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
   },
   {
     "name": "Redmi 11s 5G",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://",
     "created_at": "2020-05-09"
-  },
+  }
 ]
