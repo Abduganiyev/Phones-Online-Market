@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +13,8 @@ import java.sql.Timestamp;
 public class Product {
     private Long id;
     private String name;
+    private Double price;
     private Long categoryId;
     private String imageUrl;
-    private Timestamp created_at;
+    private String created_at;
 }

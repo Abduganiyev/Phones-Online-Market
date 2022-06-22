@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "Iphone Se",
+    "price": "800",
+    "categoryId": "4",
+    "imageUrl": "https://",
+    "created_at": "2020-12-00"
+  },
+  {
+    "id": 2,
+    "name": "Iphone X",
+    "price": "850",
+    "categoryId": "4",
+    "imageUrl": "https://",
+    "created_at": "2020-12-00"
+  },
+  {
+    "id": 3,
+    "name": "Iphone 13 Pro",
+    "price": "1500",
+    "categoryId": "4",
+    "imageUrl": "https://",
+    "created_at": "2020-12-00"
+  },
+  {
+    "id": 4,
+    "name": "AirPods 3",
+    "price": "200",
+    "categoryId": "5",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 5,
+    "name": "AirPods Pro",
+    "price": "210",
+    "categoryId": "5",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 6,
+    "name": "AirPods Max",
+    "price": "240",
+    "categoryId": "5",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 7,
+    "name": "Apple Watch Seria 7",
+    "price": "300",
+    "categoryId": "6",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 8,
+    "name": "Apple Watch Se",
+    "price": "300",
+    "categoryId": "6",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 9,
+    "name": "Apple Watch Nike",
+    "price": "300",
+    "categoryId": "6",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 10,
+    "name": "Galaxy S22",
+    "price": "800",
+    "categoryId": "7",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 11,
+    "name": "Galaxy Z Flip 3",
+    "price": "800",
+    "categoryId": "7",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 12,
+    "name": "Galaxy Bespoke",
+    "price": "800",
+    "categoryId": "7",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 13,
+    "name": "Xiomi 11 Lite 5G Ne",
+    "price": "800",
+    "categoryId": "10",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 14,
+    "name": "Xiomi 11 Pro",
+    "price": "800",
+    "categoryId": "10",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 15,
+    "name": "Mi 11 ultra",
+    "price": "800",
+    "categoryId": "10",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 16,
+    "name": "Redmi 11 Pro 5G",
+    "price": "800",
+    "categoryId": "11",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 17,
+    "name": "Redmi Note 11",
+    "price": "800",
+    "categoryId": "11",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  },
+  {
+    "id": 18,
+    "name": "Redmi 11s 5G",
+    "price": "800",
+    "categoryId": "11",
+    "imageUrl": "https://",
+    "created_at": "2020-05-09"
+  }
+]
