@@ -1,74 +1,59 @@
 [
   {
     "Id": 1,
-    "name": "Apple",
-    "categoryId": null,
-    "created_at": "2020-12-00"
+    "name": "Apple"
   },
   {
     "Id": 2,
-    "name": "Samsung",
-    "categoryId": null,
-    "created_at": "2020-05-09"
+    "name": "Samsung"
   },
   {
     "Id": 3,
-    "name": "Xiaomi",
-    "categoryId": null,
-    "created_at": "2020-05-09"
+    "name": "Xiaomi"
   },
   {
     "Id": 4,
     "name": "Iphone",
-    "categoryId": 1,
-    "created_at": "2020-05-09"
+    "categoryId": 1
   },
   {
     "Id": 5,
     "name": "Airpods",
-    "categoryId": 1,
-    "created_at": "2020-05-09"
+    "categoryId": 1
   },
   {
     "Id": 6,
     "name": "Watch",
-    "categoryId": 1,
-    "created_at": "2020-05-09"
+    "categoryId": 1
   },
   {
     "Id": 7,
     "name": "Mobile",
-    "categoryId": "2",
-    "created_at": "2020-05-09"
+    "categoryId": "2"
   },
   {
     "Id": 8,
     "name": "Computers",
-    "categoryId": 2,
-    "created_at": "2020-05-09"
+    "categoryId": 2
   },
   {
     "Id": 9,
     "name": "Audio",
-    "categoryId": 2,
-    "created_at": "2020-05-09"
+    "categoryId": 2
   },
   {
     "Id": 10,
     "name": "Xiomi Phones",
-    "categoryId": 3,
-    "created_at": "2020-05-09"
+    "categoryId": 3
   },
   {
     "Id": 11,
     "name": "Redmi Phones",
-    "categoryId": 3,
-    "created_at": "2020-05-09"
+    "categoryId": 3
   },
   {
     "Id": 12,
     "name": "Audio",
-    "categoryId": 3,
-    "created_at": "2020-05-09"
+    "categoryId": 3
   }
 ]
