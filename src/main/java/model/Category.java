@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Category {
     private Long id;
-    private String prefix;
     private String name;
+    private String prefix;
     private Timestamp created_at;
 }

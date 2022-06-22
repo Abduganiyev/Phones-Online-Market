@@ -1,4 +1,4 @@
-package model;
+package dto;
 
 public class Response<T> {
     private boolean status;

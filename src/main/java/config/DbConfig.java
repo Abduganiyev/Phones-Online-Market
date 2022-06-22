@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConfig {
-    public static Connection connection(String dbname) throws SQLException {
-        String url = "" + dbname;
+    public static Connection connection() throws SQLException {
+        String url = "jdbc:postgresql://localhost:5432/phones-market";
         String name = "postgres";
         String password = "2004";
         return DriverManager.getConnection(url,name,password);
