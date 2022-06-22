@@ -2,15 +2,17 @@ package services.implement;
 
 import com.google.gson.Gson;
 import model.Category;
+import services.CategoryService;
 import services.StoreDataToDbFromJson;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class StoreDataToDbFromJsonImp implements StoreDataToDbFromJson {
-    public static void store(){
+    public static void store() throws SQLException {
         Gson gson = new Gson();
 
         List<Category> categoryList = new ArrayList<>();
@@ -21,8 +23,7 @@ public class StoreDataToDbFromJsonImp implements StoreDataToDbFromJson {
             throw new RuntimeException(e);
         }
 
-        for (Category category : categoryList) {
-            System.out.println(category);
-        }
+        CategoryService categoryService = new CategoryServiceImp();
+        categoryService.saveAll(categoryList);
     }
 }
