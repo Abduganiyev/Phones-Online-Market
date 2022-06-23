@@ -2,11 +2,12 @@ package repository;
 
 import dto.Response;
 import model.Category;
+import model.Product;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductRepository {
-    Response<Category> findById(Long id) throws SQLException;
-    Response<List<Category>> saveAll(List<Category> c) throws SQLException;
+    Response<Product> findById(Long id) throws SQLException;
+    Response<List<Product>> saveAll(List<Product> c) throws SQLException;
 }

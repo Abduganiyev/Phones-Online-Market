@@ -18,8 +18,8 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public Response<List<Category>> saveAll(List<Category> c) throws SQLException {
-        categoryRepository.saveAll(c);
-        return null;
+        Response<List<Category>> response = categoryRepository.saveAll(c);
+        return response;
     }
 
     @Override

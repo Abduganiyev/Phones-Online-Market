@@ -2,7 +2,10 @@ package services.implement;
 
 import com.google.gson.Gson;
 import model.Category;
+import model.Product;
+import repository.ProductRepository;
 import services.CategoryService;
+import services.ProductService;
 import services.StoreDataToDbFromJson;
 
 import java.io.*;
@@ -25,5 +28,16 @@ public class StoreDataToDbFromJsonImp implements StoreDataToDbFromJson {
 
         CategoryService categoryService = new CategoryServiceImp();
         categoryService.saveAll(categoryList);
+
+        List<Product> producList = new ArrayList<>();
+
+        try(BufferedReader bf = new BufferedReader(new FileReader("src/main/resources/Products.json"))) {
+            producList.addAll(Arrays.asList(gson.fromJson(bf, Product[].class)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ProductService productService = new ProductServiceImp();
+        productService.saveAll(producList);
     }
 }
