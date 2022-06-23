@@ -1,6 +1,5 @@
 package repository.implement;
 
-import config.DbConfig;
 import dto.Response;
 import model.Product;
 import repository.ProductRepository;
@@ -9,17 +8,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static config.DbConfig.connection;
+
 public class ProductRepositoryImpl implements ProductRepository {
-    public static Connection connection;
-
-    static {
-        try {
-            connection = DbConfig.connection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public Response<Product> findById(Long id) throws SQLException {
         String SELECT_BY_ID = "SELECT * FROM products WHERE id = " + id;
