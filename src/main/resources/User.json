@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "chat_id": 123456,
+    "firstname": "Abduganiyev",
+    "lastname": "",
+    "username": "@umarali",
+    "phoneNumber": "+11564472545",
+    "botState": "START",
+    "user_roles": 1
+  }
+]
