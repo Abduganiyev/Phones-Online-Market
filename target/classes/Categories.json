@@ -1,58 +1,58 @@
 [
   {
-    "Id": 1,
+    "id": 1,
     "name": "Apple"
   },
   {
-    "Id": 2,
+    "id": 2,
     "name": "Samsung"
   },
   {
-    "Id": 3,
+    "id": 3,
     "name": "Xiaomi"
   },
   {
-    "Id": 4,
+    "id": 4,
     "name": "Iphone",
     "categoryId": 1
   },
   {
-    "Id": 5,
+    "id": 5,
     "name": "Airpods",
     "categoryId": 1
   },
   {
-    "Id": 6,
+    "id": 6,
     "name": "Watch",
     "categoryId": 1
   },
   {
-    "Id": 7,
+    "id": 7,
     "name": "Mobile",
     "categoryId": "2"
   },
   {
-    "Id": 8,
+    "id": 8,
     "name": "Computers",
     "categoryId": 2
   },
   {
-    "Id": 9,
+    "id": 9,
     "name": "Audio",
     "categoryId": 2
   },
   {
-    "Id": 10,
+    "id": 10,
     "name": "Xiomi Phones",
     "categoryId": 3
   },
   {
-    "Id": 11,
+    "id": 11,
     "name": "Redmi Phones",
     "categoryId": 3
   },
   {
-    "Id": 12,
+    "id": 12,
     "name": "Audio",
     "categoryId": 3
   }
