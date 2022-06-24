@@ -1,12 +1,11 @@
 package services.implement;
 
 import com.google.gson.Gson;
+import enums.Role;
 import model.Category;
 import model.Product;
-import repository.ProductRepository;
-import services.CategoryService;
-import services.ProductService;
-import services.StoreDataToDbFromJson;
+import model.User;
+import services.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -39,5 +38,21 @@ public class StoreDataToDbFromJsonImp implements StoreDataToDbFromJson {
 
         ProductService productService = new ProductServiceImp();
         productService.saveAll(producList);
+
+        List<User> userList = new ArrayList<>();
+
+        try(BufferedReader bf = new BufferedReader(new FileReader("src/main/resources/User.json"))) {
+            userList.addAll(Arrays.asList(gson.fromJson(bf, User[].class)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        UserService userService = new UserServiceImp();
+        userService.saveAll(userList);
+
+        List<Role> roleList = new ArrayList<>(Arrays.asList(Role.values()));
+
+        RoleService roleService = new RoleServiceImp();
+        roleService.saveAll(roleList);
     }
 }

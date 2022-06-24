@@ -1,2 +1,7 @@
-package enums;public class Role {
+package enums;
+
+public enum Role {
+    ADMIN,
+    CUSTOMER,
+    KIMDUR
 }
