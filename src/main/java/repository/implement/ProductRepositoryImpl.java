@@ -6,6 +6,7 @@ import repository.ProductRepository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static config.DbConfig.connection;
@@ -45,5 +46,21 @@ public class ProductRepositoryImpl implements ProductRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Response<List<Product>> findAllByCategoryID(Long id) throws SQLException {
+        String SELECT_BY_ID = "SELECT * FROM products WHERE id = " + id;
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        List<Product> productList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            productList.add(new Product(resultSet.getLong("id"), resultSet.getString("name"),
+                resultSet.getDouble("price"), resultSet.getLong("category_id"),
+                resultSet.getString("image_url"), resultSet.getTimestamp("created_at").toString()));
+        }
+        return new Response<>(true, "", productList);
     }
 }

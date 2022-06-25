@@ -4,9 +4,12 @@ import dto.Response;
 import enums.BotState;
 import enums.Role;
 import model.Category;
+import model.Product;
 import model.User;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
@@ -15,8 +18,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import services.CategoryService;
+import services.ProductService;
 import services.UserService;
 import services.implement.CategoryServiceImp;
+import services.implement.ProductServiceImp;
 import services.implement.UserServiceImp;
 import util.BotConstants;
 import util.BotMenu;
@@ -29,6 +34,7 @@ import java.util.List;
 public class BotService {
     static UserService userService = new UserServiceImp();
     static CategoryService categoryService = new CategoryServiceImp();
+    static ProductService productService = new ProductServiceImp();
     // Register if new User
     public static SendMessage start(Update update) throws SQLException {
         registerUser(update);
@@ -100,7 +106,7 @@ public class BotService {
         return sendMessage;
     }
 
-    private static ReplyKeyboard getInlineKeyboards(List<Category> categories) {
+    private static InlineKeyboardMarkup getInlineKeyboards(List<Category> categories) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> inlineKeyboards = new ArrayList<>();
         List<InlineKeyboardButton> buttons = new ArrayList<>();
@@ -111,12 +117,12 @@ public class BotService {
             buttons = new ArrayList<>();
 
             InlineKeyboardButton button1 = new InlineKeyboardButton(next.getName());
-            button1.setCallbackData(next.getId().toString());
+            button1.setCallbackData("category/" + next.getId().toString());
             buttons.add(button1);
             if (iterator.hasNext()) {
                     next = iterator.next();
                     InlineKeyboardButton button2 = new InlineKeyboardButton(next.getName());
-                    button2.setCallbackData(next.getId().toString());
+                    button2.setCallbackData("category/" + next.getId().toString());
                     buttons.add(button2);
             }
 
@@ -125,5 +131,80 @@ public class BotService {
 
         inlineKeyboardMarkup.setKeyboard(inlineKeyboards);
         return inlineKeyboardMarkup;
+    }
+
+    private static InlineKeyboardMarkup getInlineKeyboardsProduct(List<Product> products) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> inlineKeyboards = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product next = iterator.next();
+            buttons = new ArrayList<>();
+
+            InlineKeyboardButton button1 = new InlineKeyboardButton(next.getName());
+            button1.setCallbackData("product/" + next.getId().toString());
+            buttons.add(button1);
+            if (iterator.hasNext()) {
+                next = iterator.next();
+                InlineKeyboardButton button2 = new InlineKeyboardButton(next.getName());
+                button2.setCallbackData("product/" + next.getId().toString());
+                buttons.add(button2);
+            }
+
+            inlineKeyboards.add(buttons);
+        }
+
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboards);
+        return inlineKeyboardMarkup;
+    }
+    public static EditMessageText showSubCategoriesByID(Message message,Update update) throws SQLException {
+        String data = update.getCallbackQuery().getData();
+
+
+        Response<User> response = userService.findByChat_Id(message.getChatId());
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.SHOW_CATEGORIES);
+            userService.update(user);
+        }
+
+        Response<List<Category>> productResponse = categoryService.findAllSubByID(Long.parseLong(data));
+
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setParseMode(ParseMode.MARKDOWN);
+        editMessageText.setText(BotConstants.BOT_HEADER);
+
+        editMessageText.setReplyMarkup(getInlineKeyboards(productResponse.getObject()));
+
+        return editMessageText;
+    }
+
+    public static EditMessageText showProductsByCategory(Message message,Update update) throws SQLException {
+        String data = update.getCallbackQuery().getData();
+        Long categoryId = Long.getLong(data);
+
+
+        Response<User> response = userService.findByChat_Id(message.getChatId());
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.SHOW_PRODUCTS);
+            userService.update(user);
+        }
+
+        Response<List<Product>> productResponse = productService.findAllByCategoryID(categoryId);
+
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setParseMode(ParseMode.MARKDOWN);
+        editMessageText.setText(BotConstants.BOT_HEADER);
+
+        editMessageText.setReplyMarkup(getInlineKeyboardsProduct(productResponse.getObject()));
+
+        return editMessageText;
     }
 }

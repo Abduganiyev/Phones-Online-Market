@@ -72,17 +72,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Response<List<Category>> findAllSub() throws SQLException {
+    public Response<List<Category>> findAllSubByID(Long id) throws SQLException {
         List<Category> categoryList = new ArrayList<>();
-        String SELECT_ALL ="SELECT * FROM category";
+        String SELECT_ALL ="SELECT * FROM category WHERE category_id = " + id;
         PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            if (resultSet.getLong("category_id") != 0) {
-                categoryList.add(new Category(resultSet.getLong("id"),resultSet.getString("name"),
-                        resultSet.getLong("category_id"),resultSet.getTimestamp("created_at").toString()));
-            }
+            categoryList.add(new Category(resultSet.getLong("id"),resultSet.getString("name"),
+                    resultSet.getLong("category_id"),resultSet.getTimestamp("created_at").toString()));
         }
         return new Response<>(true,"",categoryList);
     }

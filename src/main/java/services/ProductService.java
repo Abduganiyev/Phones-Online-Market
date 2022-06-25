@@ -10,6 +10,6 @@ import java.util.List;
 public interface ProductService {
     Response<Product> save(Product p);
     Response<List<Product>> saveAll(List<Product> p) throws SQLException;
-    Response<List<Product>> findAll();
+    Response<List<Product>> findAllByCategoryID(Long id) throws SQLException;
     Response<Product> findById();
 }

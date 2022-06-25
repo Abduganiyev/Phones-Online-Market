@@ -25,8 +25,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Response<List<Product>> findAll() {
-        return null;
+    public Response<List<Product>> findAllByCategoryID(Long id) throws SQLException {
+        Response<List<Product>> response = productRepository.findAllByCategoryID(id);
+        return response;
     }
 
     @Override

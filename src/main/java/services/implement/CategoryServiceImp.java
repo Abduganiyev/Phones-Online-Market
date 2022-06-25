@@ -29,8 +29,8 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public Response<List<Category>> findAllSub() throws SQLException {
-        Response<List<Category>> response = categoryRepository.findAllSub();
+    public Response<List<Category>> findAllSubByID(Long id) throws SQLException {
+        Response<List<Category>> response = categoryRepository.findAllSubByID(id);
         return response;
     }
 
