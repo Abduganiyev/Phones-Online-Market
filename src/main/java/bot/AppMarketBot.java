@@ -5,6 +5,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import util.BotMenu;
 import util.BotSettings;
 
 import java.util.List;
@@ -23,38 +24,30 @@ public class AppMarketBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        Long chatId = update.getMessage().getChatId();
-
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            switch (message.getText()) {
-                case "/start":
-                    System.out.println(update.getMessage().getFrom());
-                    execute(SendMessage.builder().text(update.getMessage().getFrom().toString()).chatId(message.getChatId().toString()).build());
-                    break;
-                case "/stop":
-                    //execute(sendMessage.setText("Ozing qalaysan!"));
-                    break;
-                default:
-                    //execute(nonCommand(message));
+            SendMessage sendMessage = null;
+
+            if (message.hasText()) {
+                String text = message.getText();
+                switch (text) {
+                    case BotMenu.START:
+                        System.out.println(update.getMessage().getContact());
+                        sendMessage = BotService.start(update);
+                        break;
+                    case "/stop":
+
+                        break;
+                    default:
+
+                }
             }
+
+            execute(sendMessage);
+
+
+        } else if (update.hasCallbackQuery()) {
+
         }
     }
-
-    /*private SendMessage nonCommand(Message message) {
-        Long chatId = message.getChatId();
-        SendMessage sendMessage = new SendMessage().setChatId(chatId);
-
-        if (message.hasText()) {
-            switch (message.getText()) {
-                case "qalaysan":
-                    sendMessage.setText("Ozing Qalaysan");
-                    break;
-                default:
-                    sendMessage.setText(message.getText() + "  " + message.getChat().getFirstName());
-            }
-
-        }
-        return sendMessage;
-    }*/
 }

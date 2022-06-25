@@ -23,7 +23,7 @@ public class RoleRepositoryImp implements RoleRepository {
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
-            return new Response<>(true, "", Role.values()[Math.toIntExact(id)]);
+            return new Response<>(true, "", Role.values()[Math.toIntExact(id - 1)]);
         }
         return null;
     }
