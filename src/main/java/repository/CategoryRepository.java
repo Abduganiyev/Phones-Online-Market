@@ -9,4 +9,8 @@ import java.util.List;
 public interface CategoryRepository {
     Response<Category> findById(Long id) throws SQLException;
     Response<List<Category>> saveAll(List<Category> c) throws SQLException;
+
+    Response<List<Category>> findAll() throws SQLException;
+
+    Response<List<Category>> findAllSub() throws SQLException;
 }

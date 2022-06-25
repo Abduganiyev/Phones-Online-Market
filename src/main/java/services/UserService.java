@@ -12,4 +12,6 @@ public interface UserService {
     Response<User> save(User user) throws SQLException;
 
     Response<User> findByChat_Id(Long chatId) throws SQLException;
+
+    Response<User> update(User user) throws SQLException;
 }

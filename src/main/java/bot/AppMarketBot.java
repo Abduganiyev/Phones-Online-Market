@@ -35,8 +35,8 @@ public class AppMarketBot extends TelegramLongPollingBot {
                         System.out.println(update.getMessage().getContact());
                         sendMessage = BotService.start(update);
                         break;
-                    case "/stop":
-
+                    case BotMenu.MENU:
+                        sendMessage = BotService.menu(message.getChatId());
                         break;
                     default:
 

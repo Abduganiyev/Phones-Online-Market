@@ -6,6 +6,7 @@ import repository.CategoryRepository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static config.DbConfig.connection;
@@ -52,5 +53,37 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
 
         return null;
+    }
+
+    @Override
+    public Response<List<Category>> findAll() throws SQLException {
+        List<Category> categoryList = new ArrayList<>();
+        String SELECT_ALL ="SELECT * FROM category";
+        PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            if (resultSet.getLong("category_id") == 0) {
+                categoryList.add(new Category(resultSet.getLong("id"),resultSet.getString("name"),
+                        resultSet.getLong("category_id"),resultSet.getTimestamp("created_at").toString()));
+            }
+        }
+        return new Response<>(true,"",categoryList);
+    }
+
+    @Override
+    public Response<List<Category>> findAllSub() throws SQLException {
+        List<Category> categoryList = new ArrayList<>();
+        String SELECT_ALL ="SELECT * FROM category";
+        PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            if (resultSet.getLong("category_id") != 0) {
+                categoryList.add(new Category(resultSet.getLong("id"),resultSet.getString("name"),
+                        resultSet.getLong("category_id"),resultSet.getTimestamp("created_at").toString()));
+            }
+        }
+        return new Response<>(true,"",categoryList);
     }
 }

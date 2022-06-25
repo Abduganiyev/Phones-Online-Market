@@ -23,8 +23,15 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public Response<List<Category>> findAll() {
-        return null;
+    public Response<List<Category>> findAll() throws SQLException {
+        Response<List<Category>> response = categoryRepository.findAll();
+        return response;
+    }
+
+    @Override
+    public Response<List<Category>> findAllSub() throws SQLException {
+        Response<List<Category>> response = categoryRepository.findAllSub();
+        return response;
     }
 
     @Override

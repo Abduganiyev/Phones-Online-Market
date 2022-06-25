@@ -12,4 +12,5 @@ public interface UserRepository {
 
     Response<User> save(User user) throws SQLException;
 
+    Response<User> update(User user) throws SQLException;
 }

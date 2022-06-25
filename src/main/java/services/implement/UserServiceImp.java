@@ -28,4 +28,10 @@ public class UserServiceImp implements UserService {
         Response<User> response = userRepository.findByChat_Id(chatId);
         return response;
     }
+
+    @Override
+    public Response<User> update(User user) throws SQLException {
+        Response<User> response = userRepository.update(user);
+        return response;
+    }
 }
