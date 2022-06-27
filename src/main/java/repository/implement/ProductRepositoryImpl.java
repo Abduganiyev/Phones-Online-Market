@@ -50,7 +50,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Response<List<Product>> findAllByCategoryID(Long id) throws SQLException {
-        String SELECT_BY_ID = "SELECT * FROM products WHERE id = " + id;
+        String SELECT_BY_ID = "SELECT * FROM products WHERE category_id = " + id;
         PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID);
         ResultSet resultSet = statement.executeQuery();
 

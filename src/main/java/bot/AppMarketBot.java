@@ -1,17 +1,14 @@
 package bot;
 
-import enums.BotState;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import util.BotMenu;
 import util.BotSettings;
-
-import java.util.List;
 
 public class AppMarketBot extends TelegramLongPollingBot {
     @Override
@@ -52,22 +49,19 @@ public class AppMarketBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             Message message = update.getCallbackQuery().getMessage();
-            EditMessageText editMessageText;
-            switch (data) {
-                case "1":
+            EditMessageText editMessageText = null;
+            if (data.contains("category")) {
                     editMessageText = BotService.showSubCategoriesByID(message,update);
-                    break;
-                case "2":
-                    editMessageText = BotService.showSubCategoriesByID(message,update);
-                    break;
-                case "3":
-                    editMessageText = BotService.showProductsByCategory(message,update);
-                    break;
-                default:
-                    editMessageText = BotService.showProductsByCategory(message,update);
+                    execute(editMessageText);
+            } else if (data.contains("subCategory")) {
+                editMessageText = BotService.showProductsByCategory(message,update);
+                execute(editMessageText);
+            } else if (data.contains("product")) {
+                SendPhoto sendPhoto = BotService.showProductInfoByID(message,update);
+                execute(sendPhoto);
             }
 
-            execute(editMessageText);
+
 
         }
     }

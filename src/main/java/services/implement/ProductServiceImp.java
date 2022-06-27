@@ -31,7 +31,8 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Response<Product> findById() {
-        return null;
+    public Response<Product> findById(Long id) throws SQLException {
+        Response<Product> response = productRepository.findById(id);
+        return response;
     }
 }

@@ -8,7 +8,9 @@ import model.Product;
 import model.User;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -43,11 +45,11 @@ public class BotService {
         sendMessage.setParseMode(ParseMode.MARKDOWN);
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText(BotConstants.BOT_HEADER);
-        sendMessage.setReplyMarkup(getMenuKeyoard());
+        sendMessage.setReplyMarkup(getMenuKeyboard());
         return sendMessage;
     }
 
-    private static ReplyKeyboard getMenuKeyoard() {
+    private static ReplyKeyboard getMenuKeyboard() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(true);
@@ -132,6 +134,32 @@ public class BotService {
         inlineKeyboardMarkup.setKeyboard(inlineKeyboards);
         return inlineKeyboardMarkup;
     }
+    private static InlineKeyboardMarkup getInlineKeyboardsSubCategory(List<Category> categories) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> inlineKeyboards = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+
+        Iterator<Category> iterator = categories.iterator();
+        while (iterator.hasNext()) {
+            Category next = iterator.next();
+            buttons = new ArrayList<>();
+
+            InlineKeyboardButton button1 = new InlineKeyboardButton(next.getName());
+            button1.setCallbackData("subCategory/" + next.getId().toString());
+            buttons.add(button1);
+            if (iterator.hasNext()) {
+                next = iterator.next();
+                InlineKeyboardButton button2 = new InlineKeyboardButton(next.getName());
+                button2.setCallbackData("subCategory/" + next.getId().toString());
+                buttons.add(button2);
+            }
+
+            inlineKeyboards.add(buttons);
+        }
+
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboards);
+        return inlineKeyboardMarkup;
+    }
 
     private static InlineKeyboardMarkup getInlineKeyboardsProduct(List<Product> products) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -170,7 +198,8 @@ public class BotService {
             userService.update(user);
         }
 
-        Response<List<Category>> productResponse = categoryService.findAllSubByID(Long.parseLong(data));
+        long l = Long.parseLong(data.substring(9));
+        Response<List<Category>> productResponse = categoryService.findAllSubByID(l);
 
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(message.getChatId().toString());
@@ -178,14 +207,13 @@ public class BotService {
         editMessageText.setParseMode(ParseMode.MARKDOWN);
         editMessageText.setText(BotConstants.BOT_HEADER);
 
-        editMessageText.setReplyMarkup(getInlineKeyboards(productResponse.getObject()));
+        editMessageText.setReplyMarkup(getInlineKeyboardsSubCategory(productResponse.getObject()));
 
         return editMessageText;
     }
 
     public static EditMessageText showProductsByCategory(Message message,Update update) throws SQLException {
         String data = update.getCallbackQuery().getData();
-        Long categoryId = Long.getLong(data);
 
 
         Response<User> response = userService.findByChat_Id(message.getChatId());
@@ -195,6 +223,7 @@ public class BotService {
             userService.update(user);
         }
 
+        long categoryId = Long.parseLong(data.substring(12));
         Response<List<Product>> productResponse = productService.findAllByCategoryID(categoryId);
 
         EditMessageText editMessageText = new EditMessageText();
@@ -206,5 +235,58 @@ public class BotService {
         editMessageText.setReplyMarkup(getInlineKeyboardsProduct(productResponse.getObject()));
 
         return editMessageText;
+    }
+
+    public static SendPhoto showProductInfoByID(Message message, Update update) throws SQLException {
+        String data = update.getCallbackQuery().getData();
+
+
+        Response<User> response = userService.findByChat_Id(message.getChatId());
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.SELECT_PRODUCT);
+            userService.update(user);
+        }
+
+        long productId = Long.parseLong(data.substring(8));
+        Response<Product> productResponse = productService.findById(productId);
+
+        SendPhoto sendPhoto = new SendPhoto();
+        if (productResponse != null) {
+            sendPhoto.setChatId(message.getChatId().toString());
+            sendPhoto.setPhoto(new InputFile(productResponse.getObject().getImageUrl()));
+            sendPhoto.setCaption(productResponse.getObject().getName() + "\n\nPrice: " + productResponse.getObject().getPrice() +
+                    "$\n\nMiqdorini  tanlang");
+
+        /*
+            9 INLINE BUTTONS FOR COUNT OF ORDER
+        */
+
+            sendPhoto.setReplyMarkup(getInlineKeyboardsForOrder(productId));
+        }
+
+
+
+        return sendPhoto;
+    }
+
+    private static ReplyKeyboard getInlineKeyboardsForOrder(Long productId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> inlineKeyboards = new ArrayList<>();
+
+        int counter = 1;
+        for (int i = 0; i < 3; i++) {
+            List<InlineKeyboardButton> buttons = new ArrayList<>();
+            for (int j = 0; j < 3; j++) {
+                InlineKeyboardButton button = new InlineKeyboardButton(counter + "ta");
+                button.setCallbackData("amount" + productId + "/" + counter);
+                buttons.add(button);
+                counter++;
+            }
+            inlineKeyboards.add(buttons);
+        }
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboards);
+
+        return inlineKeyboardMarkup;
     }
 }
