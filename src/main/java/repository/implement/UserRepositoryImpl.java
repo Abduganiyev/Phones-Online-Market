@@ -71,7 +71,13 @@ public class UserRepositoryImpl implements UserRepository {
         //statement.setBoolean(8, user.isBot());
         statement.setLong(8, user.getUser_roles());
 
-        statement.executeUpdate();
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return new Response<>(true, "", new User(resultSet.getLong("id"), resultSet.getLong("chat_id"),
+                    resultSet.getString("first_name"),resultSet.getBoolean("is_bot"), resultSet.getString("last_name"),
+                    resultSet.getString("username"),resultSet.getString("phone_number"),BotState.fromString(resultSet.getString("bot_state")),
+                    resultSet.getLong("user_roles"),resultSet.getString("created_at")));
+        }
 
         return null;
     }

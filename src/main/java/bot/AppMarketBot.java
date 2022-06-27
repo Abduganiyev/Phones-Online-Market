@@ -59,6 +59,8 @@ public class AppMarketBot extends TelegramLongPollingBot {
             } else if (data.contains("product")) {
                 SendPhoto sendPhoto = BotService.showProductInfoByID(message,update);
                 execute(sendPhoto);
+            } else if (data.contains("amount")) {
+
             }
 
 

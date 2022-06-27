@@ -3,6 +3,7 @@ package bot;
 import dto.Response;
 import enums.BotState;
 import enums.Role;
+import model.Cart;
 import model.Category;
 import model.Product;
 import model.User;
@@ -19,9 +20,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import services.CartService;
 import services.CategoryService;
 import services.ProductService;
 import services.UserService;
+import services.implement.CartServiceImp;
 import services.implement.CategoryServiceImp;
 import services.implement.ProductServiceImp;
 import services.implement.UserServiceImp;
@@ -37,6 +40,7 @@ public class BotService {
     static UserService userService = new UserServiceImp();
     static CategoryService categoryService = new CategoryServiceImp();
     static ProductService productService = new ProductServiceImp();
+    static CartService cartService = new CartServiceImp();
     // Register if new User
     public static SendMessage start(Update update) throws SQLException {
         registerUser(update);
@@ -85,7 +89,14 @@ public class BotService {
                     (long) Role.values()[2].ordinal(),
                     null
             );
-            userService.save(user);
+            Response<User> last_saved = userService.save(user);
+
+            /*
+            * CREATE CART FOR NEW USER
+            */
+            if (cartService.findByUserId(last_saved.getObject().getId()) == null) {
+                cartService.save(new Cart(last_saved.getObject().getId()));
+            }
         }
     }
 
@@ -264,9 +275,6 @@ public class BotService {
 
             sendPhoto.setReplyMarkup(getInlineKeyboardsForOrder(productId));
         }
-
-
-
         return sendPhoto;
     }
 
