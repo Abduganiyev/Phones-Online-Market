@@ -297,4 +297,30 @@ public class BotService {
 
         return inlineKeyboardMarkup;
     }
+
+    public static SendMessage addProductToCart(Message message, long productId, long amount) throws SQLException {
+        Response<User> response = userService.findByChat_Id(message.getChatId());
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.SELECT_PRODUCT_COUNT);
+            userService.update(user);
+        }
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setParseMode(ParseMode.MARKDOWN);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setText("Maxsulot savatchaga qo'shildi!");
+
+        if (response == null) {
+            sendMessage.setText("USER NOT FOUND");
+            return sendMessage;
+        }
+        Response<Cart> cart = cartService.findByUserId(response.getObject().getId());
+
+        if (cart == null) {
+            sendMessage.setText("CART NOT FOUNT WITH USER {"+ response.getObject().getFirstname() + response.getObject().getLastname() +"}");
+        }
+
+        return null;
+    }
 }

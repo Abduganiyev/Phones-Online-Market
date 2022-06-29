@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
+public class OrderDetail {
     private Long id;
-    private Long userId;
-    public Cart(Long userId) {
-        this.userId = userId;
-    }
+    private Long cartId;
+    private Long productId;
+    private Integer amount;
+    private Double totalPrice;
 }

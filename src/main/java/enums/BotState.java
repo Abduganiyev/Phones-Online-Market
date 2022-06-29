@@ -5,7 +5,8 @@ public enum BotState {
     SHOW_MENU,
     SHOW_PRODUCTS,
     SHOW_CATEGORIES,
-    SELECT_PRODUCT;
+    SELECT_PRODUCT,
+    SELECT_PRODUCT_COUNT;
 
     public static BotState fromString(String name) {
         for (BotState value : BotState.values()) {

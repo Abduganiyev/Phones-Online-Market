@@ -33,7 +33,7 @@ public class CartRepositoryImp implements CartRepository {
 
     @Override
     public Response<Cart> findByUserId(Long id) throws SQLException {
-        String SELECT_BY_USER_ID = "SELECT 8 FROM cart where user_id = " + id;
+        String SELECT_BY_USER_ID = "SELECT * FROM cart where user_id = " + id;
         PreparedStatement statement = connection.prepareStatement(SELECT_BY_USER_ID);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {

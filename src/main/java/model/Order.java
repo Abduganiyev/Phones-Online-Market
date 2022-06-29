@@ -1,5 +1,6 @@
 package model;
 
+import enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
+public class Order {
     private Long id;
-    private Long userId;
-    public Cart(Long userId) {
-        this.userId = userId;
-    }
+    private Double totalPrice;
+    private OrderStatus status;
+    private String created_at;
 }
