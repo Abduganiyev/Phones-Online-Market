@@ -10,6 +10,5 @@ public interface CartRepository {
     Response<Cart> save(Cart cart) throws SQLException;
     Response<List<Cart>> findAll();
     Response<Cart> findById(Long id);
-
-    Response<Cart> findByUserId(Long id);
+    Response<Cart> findByUserId(Long id) throws SQLException;
 }

@@ -5,6 +5,7 @@ import model.Cart;
 import repository.CartRepository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,8 +14,10 @@ import static config.DbConfig.connection;
 public class CartRepositoryImp implements CartRepository {
     @Override
     public Response<Cart> save(Cart cart) throws SQLException {
-        String INSERT_NEW_CART = "";
+        String INSERT_NEW_CART = "INSERT INTO cart(user_id) VALUES (?)";
         PreparedStatement statement = connection.prepareStatement(INSERT_NEW_CART);
+        statement.setLong(1, cart.getUserId());
+        statement.executeQuery();
         return null;
     }
 
@@ -29,7 +32,14 @@ public class CartRepositoryImp implements CartRepository {
     }
 
     @Override
-    public Response<Cart> findByUserId(Long id) {
+    public Response<Cart> findByUserId(Long id) throws SQLException {
+        String SELECT_BY_USER_ID = "SELECT 8 FROM cart where user_id = " + id;
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_USER_ID);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return new Response<>(true,"",new Cart(resultSet.getLong("id"),
+                    resultSet.getLong("user_id")));
+        }
         return null;
     }
 }
