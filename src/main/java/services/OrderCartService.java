@@ -10,4 +10,6 @@ public interface OrderCartService {
     Response<OrderCart> save(OrderCart orderCart) throws SQLException;
     Response<List<OrderCart>> findAll();
     Response<OrderCart> findById(Long id);
+
+    Response<OrderCart> findByCartAndProduct(Long id, long productId);
 }

@@ -2,11 +2,9 @@ package bot;
 
 import dto.Response;
 import enums.BotState;
+import enums.OrderCartStatus;
 import enums.Role;
-import model.Cart;
-import model.Category;
-import model.Product;
-import model.User;
+import model.*;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -20,14 +18,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import services.CartService;
-import services.CategoryService;
-import services.ProductService;
-import services.UserService;
-import services.implement.CartServiceImp;
-import services.implement.CategoryServiceImp;
-import services.implement.ProductServiceImp;
-import services.implement.UserServiceImp;
+import services.*;
+import services.implement.*;
 import util.BotConstants;
 import util.BotMenu;
 
@@ -41,6 +33,7 @@ public class BotService {
     static CategoryService categoryService = new CategoryServiceImp();
     static ProductService productService = new ProductServiceImp();
     static CartService cartService = new CartServiceImp();
+    static OrderCartService orderCartService = new OrderCartServiceImp();
     // Register if new User
     public static SendMessage start(Update update) throws SQLException {
         registerUser(update);
@@ -287,7 +280,7 @@ public class BotService {
             List<InlineKeyboardButton> buttons = new ArrayList<>();
             for (int j = 0; j < 3; j++) {
                 InlineKeyboardButton button = new InlineKeyboardButton(counter + "ta");
-                button.setCallbackData("amount" + productId + "/" + counter);
+                button.setCallbackData("amount/" + productId + "/" + counter);
                 buttons.add(button);
                 counter++;
             }
@@ -298,7 +291,7 @@ public class BotService {
         return inlineKeyboardMarkup;
     }
 
-    public static SendMessage addProductToCart(Message message, long productId, long amount) throws SQLException {
+    public static SendMessage addProductToCart(Message message, long productId, Integer amount) throws SQLException {
         Response<User> response = userService.findByChat_Id(message.getChatId());
         if (response != null) {
             User user = response.getObject();
@@ -315,12 +308,27 @@ public class BotService {
             sendMessage.setText("USER NOT FOUND");
             return sendMessage;
         }
-        Response<Cart> cart = cartService.findByUserId(response.getObject().getId());
 
-        if (cart == null) {
-            sendMessage.setText("CART NOT FOUNT WITH USER {"+ response.getObject().getFirstname() + response.getObject().getLastname() +"}");
+        Response<Product> productResponse = productService.findById(productId);
+        if(productResponse == null) {
+            sendMessage.setText("PRODUCT NOT FOUND {"+ productId +"}");
+            return sendMessage;
         }
 
-        return null;
+        Response<Cart> cart = cartService.findByUserId(response.getObject().getId());
+        if (cart == null) {
+            sendMessage.setText("CART NOT FOUNT WITH USER {"+ response.getObject().getFirstname() + " " + response.getObject().getLastname() +"}");
+            return sendMessage;
+        }
+
+        Response<OrderCart> orderCartResponse = orderCartService.findByCartAndProduct(cart.getObject().getId(),productId);
+        if(orderCartResponse == null) {
+            orderCartService.save(new OrderCart(cart.getObject().getId(),
+                    productId,amount,
+                    (productResponse.getObject().getPrice() * amount),
+                    OrderCartStatus.OPEN,
+                    false));
+        }
+        return sendMessage;
     }
 }

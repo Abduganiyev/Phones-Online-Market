@@ -17,7 +17,11 @@ public class CartRepositoryImp implements CartRepository {
         String INSERT_NEW_CART = "INSERT INTO cart(user_id) VALUES (?)";
         PreparedStatement statement = connection.prepareStatement(INSERT_NEW_CART);
         statement.setLong(1, cart.getUserId());
-        statement.executeQuery();
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

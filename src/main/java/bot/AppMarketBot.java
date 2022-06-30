@@ -62,7 +62,7 @@ public class AppMarketBot extends TelegramLongPollingBot {
             } else if (data.contains("amount")) {
                 String[] split = data.split("/");
                 long productId = Long.parseLong(split[1].trim());
-                long amount = Long.parseLong(split[2].trim());
+                int amount = Integer.parseInt(split[2].trim());
 
                 SendMessage sendMessage = BotService.addProductToCart(message, productId , amount);
 
