@@ -4,91 +4,91 @@
     "name": "Iphone Se",
     "price": "800",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1JJStraqk9uXJwcmfBVZj4s4WHkoQFprS/view?usp=sharing"
   },
   {
     "id": 2,
     "name": "Iphone X",
     "price": "850",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1zYtFz2upfzjSGxVmDLABIS5Yje55moOw/view?usp=sharing"
   },
   {
     "id": 3,
     "name": "Iphone 13 Pro",
     "price": "1500",
     "categoryId": "4",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1bn5SNGxDYQ8ZLsM-9ETV_Yym00ZjbSuN/view?usp=sharing"
   },
   {
     "id": 4,
     "name": "AirPods 3",
     "price": "200",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1uwg_TkLggfsoYHnfIfugcNLAhknh_vWE/view?usp=sharing"
   },
   {
     "id": 5,
     "name": "AirPods Pro",
     "price": "210",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1Vkse7mxAVhuL9dN94yEg2_tctojLIV51/view?usp=sharing"
   },
   {
     "id": 6,
     "name": "AirPods Max",
     "price": "240",
     "categoryId": "5",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1l5tQf0CP-9gvBVluZmIDLu0sI535B58w/view?usp=sharing"
   },
   {
     "id": 7,
     "name": "Apple Watch Seria 7",
     "price": "300",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1P3jQaGbw_Lv8jqD1hJeEw3Aa6geyKZvn/view?usp=sharing"
   },
   {
     "id": 8,
     "name": "Apple Watch Se",
     "price": "300",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/16JeH0_xVxBCY7f9Pg3s_dcFXcwrvcETl/view?usp=sharing"
   },
   {
     "id": 9,
     "name": "Apple Watch Nike",
     "price": "300",
     "categoryId": "6",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/122qETERDSSfM5D31Zi9ax3RUf2i67hGP/view?usp=sharing"
   },
   {
     "id": 10,
     "name": "Galaxy S22",
     "price": "800",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1ig1gd8CQSuJsaI94kahuz-E_uyCcqXvN/view?usp=sharing"
   },
   {
     "id": 11,
     "name": "Galaxy Z Flip 3",
     "price": "800",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1IHyu7mWkyJR9R0pLrjx-hHwkdy_ZyJvV/view?usp=sharing"
   },
   {
     "id": 12,
     "name": "Galaxy Bespoke",
     "price": "800",
     "categoryId": "7",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1CgeDa3XVeyFxtBwyN93NtBClZtTqqtCY/view?usp=sharing"
   },
   {
     "id": 13,
     "name": "Xiomi 11 Lite 5G Ne",
     "price": "800",
     "categoryId": "10",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1EGeuQDV_j09YPyKD8OXixL_2mkeA6Mz8/view?usp=sharing"
   },
   {
     "id": 14,
@@ -102,27 +102,27 @@
     "name": "Mi 11 ultra",
     "price": "800",
     "categoryId": "10",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1EjQiiD3YH2B_ZDqkIWDkez2r-Ilq26CT/view?usp=sharing"
   },
   {
     "id": 16,
     "name": "Redmi 11 Pro 5G",
     "price": "800",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1_dJcstP-thtENLmOaThr5MnAUAXIsOdg/view?usp=sharing"
   },
   {
     "id": 17,
     "name": "Redmi Note 11",
     "price": "800",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1EGeuQDV_j09YPyKD8OXixL_2mkeA6Mz8/view?usp=sharing"
   },
   {
     "id": 18,
     "name": "Redmi 11s 5G",
     "price": "800",
     "categoryId": "11",
-    "imageUrl": "https://"
+    "imageUrl": "https://drive.google.com/file/d/1_dJcstP-thtENLmOaThr5MnAUAXIsOdg/view?usp=sharing"
   }
 ]
