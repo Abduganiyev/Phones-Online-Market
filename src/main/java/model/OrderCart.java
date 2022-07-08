@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,12 +17,13 @@ public class OrderCart {
     private Integer amount;
     private Double totalPrice;
     private OrderCartStatus status;
+    private LocalDateTime createdAt;
 
 /*
 * true - status (CANCELED, ORDER_SENT)
 * false - status (OPEN)
 * */
-    private boolean deleted;
+    private Boolean deleted;
 
     public OrderCart(Long cartId, Long productId, Integer amount, Double totalPrice, OrderCartStatus status, boolean deleted) {
         this.cartId = cartId;

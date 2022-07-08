@@ -2,8 +2,8 @@ package services.implement;
 
 import dto.Response;
 import model.Cart;
-import model.OrderCart;
 import repository.CartRepository;
+import repository.implement.CartRepositoryImp;
 import services.CartService;
 
 import java.sql.SQLException;
@@ -31,5 +31,11 @@ public class CartServiceImp implements CartService {
     public Response<Cart> findByUserId(Long id) throws SQLException {
         Response<Cart> response = cartRepository.findByUserId(id);
         return response;
+    }
+
+    @Override
+    public Response<Cart> removeAll(Long id) throws SQLException {
+        Response<Cart> cartResponse = cartRepository.removeAll(id);
+        return cartResponse;
     }
 }

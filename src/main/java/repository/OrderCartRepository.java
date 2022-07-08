@@ -1,5 +1,6 @@
 package repository;
 
+import dto.OrderCartDto;
 import dto.Response;
 import model.OrderCart;
 
@@ -10,6 +11,6 @@ public interface OrderCartRepository {
     Response<OrderCart> save(OrderCart orderCart) throws SQLException;
     Response<List<OrderCart>> findAll();
     Response<OrderCart> findById(Long id);
-
     Response<OrderCart> findByCartAndProduct(Long id, long productId);
+    Response<List<OrderCartDto>> findAllByCartId(Long cartId) throws SQLException;
 }

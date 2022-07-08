@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
             return new Response<>(true, "", new User(resultSet.getLong("id"), resultSet.getLong("chat_id"),
                     resultSet.getString("first_name"),resultSet.getBoolean("is_bot"), resultSet.getString("last_name"),
                     resultSet.getString("username"),resultSet.getString("phone_number"),BotState.fromString(resultSet.getString("bot_state")),
-                    resultSet.getLong("user_roles"),resultSet.getString("created_at")));
+                    resultSet.getLong("user_roles"),resultSet.getString("created_at"), 0d,0d));
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return new Response<>(true, "", new User(resultSet.getLong("id"), resultSet.getLong("chat_id"),
                         resultSet.getString("first_name"), resultSet.getBoolean("is_bot"), resultSet.getString("last_name"),
                         resultSet.getString("username"), resultSet.getString("phone_number"), BotState.fromString(resultSet.getString("bot_state")),
-                        resultSet.getLong("user_roles"), resultSet.getString("created_at")));
+                        resultSet.getLong("user_roles"), resultSet.getString("created_at"),0d,0d));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,15 +94,23 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Response<User> update(User user) throws SQLException {
-        String UPDATE_USER_DATA = "UPDATE users SET first_name = ?, last_name = ?, username = ?, bot_state = ?" +
+        String UPDATE_USER_DATA = "UPDATE users SET first_name = ?, last_name = ?, username = ?,phone_number = ?, bot_state = ?," +
+                "longitude = ?, latitude = ?" +
                 "WHERE id = " + user.getId();
 
         PreparedStatement statement = connection.prepareStatement(UPDATE_USER_DATA);
         statement.setString(1, user.getFirstname());
         statement.setString(2, user.getLastname());
         statement.setString(3, user.getUsername());
-        statement.setString(4, user.getBotState().name());
-        statement.executeUpdate();
+        statement.setString(4, user.getPhoneNumber());
+        statement.setString(5, user.getBotState().name());
+        statement.setDouble(6, user.getCurrentLatitude());
+        statement.setDouble(7, user.getCurrentLongitude());
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }

@@ -6,7 +6,10 @@ public enum BotState {
     SHOW_PRODUCTS,
     SHOW_CATEGORIES,
     SELECT_PRODUCT,
-    SELECT_PRODUCT_COUNT;
+    SELECT_PRODUCT_COUNT,
+    SHOW_CART,
+    ORDER_COMMIT,
+    ORDER_SENT;
 
     public static BotState fromString(String name) {
         for (BotState value : BotState.values()) {

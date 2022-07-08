@@ -1,17 +1,17 @@
 package bot;
 
+import dto.OrderCartDto;
 import dto.Response;
 import enums.BotState;
 import enums.OrderCartStatus;
 import enums.Role;
 import model.*;
+import model.User;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -71,7 +71,6 @@ public class BotService {
 
         if (userService.findByChat_Id(update.getMessage().getChatId()) == null) {
             User user = new User(
-                    (Long) null,
                     update.getMessage().getChatId(),
                     from.getFirstName(),
                     (Boolean) from.getIsBot(),
@@ -79,8 +78,7 @@ public class BotService {
                     from.getUserName(),
                     update.getMessage().getContact() != null ? update.getMessage().getContact().getPhoneNumber() : "",
                     BotState.START,
-                    (long) Role.values()[2].ordinal(),
-                    null
+                    (long) Role.values()[2].ordinal()
             );
             Response<User> last_saved = userService.save(user);
 
@@ -330,5 +328,193 @@ public class BotService {
                     false));
         }
         return sendMessage;
+    }
+
+    public static SendMessage showCart(Long chatId) throws SQLException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setParseMode(ParseMode.MARKDOWN);
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.setText("");
+
+        Response<User> response = userService.findByChat_Id(chatId);
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.SHOW_CART);
+            userService.update(user);
+        } else {
+            sendMessage.setText("USER NOT FOUND");
+            return sendMessage;
+        }
+
+        Response<Cart> cartResponse = cartService.findByUserId(response.getObject().getId());
+        if(cartResponse == null) {
+            sendMessage.setText("CART NOT FOUND");
+            return sendMessage;
+        }
+
+        Response<List<OrderCartDto>> orderCartResponse = orderCartService.findAllByCartId(cartResponse.getObject().getId());
+        if (orderCartResponse.getObject().isEmpty()) {
+            sendMessage.setText("Xarid savatchasi bo'sh");
+            return sendMessage;
+        }
+
+        String text = "\n\nSavatchada\n\n";
+
+        double total = 0d;
+        for (int i = 1; i < orderCartResponse.getObject().size(); i++) {
+            OrderCartDto dto = orderCartResponse.getObject().get(i - 1);
+
+            text += i + ".\t" + dto.getProductName() + " X " + dto.getAmount() + " = " + (dto.getAmount() * dto.getProductPrice()) + "\n";
+
+            total += dto.getAmount() * dto.getProductPrice();
+
+        }
+
+        text += "\n Jami:  " + total + " $";
+
+        sendMessage.setText(text);
+        sendMessage.setReplyMarkup(getInlineKeyboardsForCart(orderCartResponse.getObject()));
+
+        return sendMessage;
+    }
+
+    private static ReplyKeyboard getInlineKeyboardsForCart(List<OrderCartDto> orderCarts) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> list = new ArrayList<>();
+
+        Iterator<OrderCartDto> iterator = orderCarts.iterator();
+        while (iterator.hasNext()) {
+            OrderCartDto orderCartDto = iterator.next();
+
+            List<InlineKeyboardButton> buttons = new ArrayList<>();
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton("❌ " + orderCartDto.getProductName());
+            inlineKeyboardButton.setCallbackData(BotConstants.ORDER_CART_DELETE + BotConstants.PREFIX + orderCartDto.getId());
+            buttons.add(inlineKeyboardButton);
+
+            if (iterator.hasNext()) {
+                orderCartDto = iterator.next();
+
+                inlineKeyboardButton = new InlineKeyboardButton("❌ " + orderCartDto.getProductName());
+                inlineKeyboardButton.setCallbackData(BotConstants.ORDER_CART_DELETE + BotConstants.PREFIX + orderCartDto.getId());
+                buttons.add(inlineKeyboardButton);
+            }
+
+            list.add(buttons);
+        }
+
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+        InlineKeyboardButton sedOrder = new InlineKeyboardButton("✅ Buyurtmani Jo'natish ");
+        sedOrder.setCallbackData("send_order");
+        buttons.add(sedOrder);
+
+        InlineKeyboardButton canselOrder = new InlineKeyboardButton("\uD83D\uDED1 Bokor qilish ");
+        canselOrder.setCallbackData("cancel_order");
+        buttons.add(canselOrder);
+
+        list.add(buttons);
+        buttons = new ArrayList<>();
+        InlineKeyboardButton home = new InlineKeyboardButton("\uD83C\uDFE0 Menu ga qaytish ");
+        home.setCallbackData("back_menu");
+        buttons.add(home);
+
+        list.add(buttons);
+
+        inlineKeyboardMarkup.setKeyboard(list);
+        return inlineKeyboardMarkup;
+    }
+
+    public static SendMessage orderCommit(Message message) throws SQLException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setParseMode(ParseMode.MARKDOWN);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setText("");
+
+        Response<User> response = userService.findByChat_Id(message.getChatId());
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.ORDER_COMMIT);
+            userService.update(user);
+        } else {
+            sendMessage.setText("USER NOT FOUND");
+            return sendMessage;
+        }
+
+        sendMessage.setText("Raqamingzni Jo'nating");
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+
+        List<KeyboardRow> rowList = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        KeyboardButton button = new KeyboardButton("\uD83D\uDCF1 Raqamni Jo'natish");
+        button.setRequestContact(true);
+        row.add(button);
+        rowList.add(row);
+        replyKeyboardMarkup.setKeyboard(rowList);
+
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        return sendMessage;
+    }
+
+    public static SendMessage getAskCurrentLocation(Long chatId, Contact contact) throws SQLException {
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setParseMode(ParseMode.MARKDOWN);
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.setText("Adressni jo'nating");
+
+
+        Response<User> response = userService.findByChat_Id(chatId);
+        if (response != null) {
+            User user = response.getObject();
+            user.setPhoneNumber(contact.getPhoneNumber());
+            userService.update(user);
+        } else {
+            sendMessage.setText("USER NOT FOUND");
+            return sendMessage;
+        }
+
+        // TODO: 05.07.2022 User ga contact dagi Telefon raqamini save qilib qo'yish
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+
+        List<KeyboardRow> rowList = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        KeyboardButton button = new KeyboardButton("\uD83D\uDCCD Locatsiya Jo'natish");
+        button.setRequestLocation(true);
+
+        row.add(button);
+        rowList.add(row);
+        replyKeyboardMarkup.setKeyboard(rowList);
+
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+
+        return sendMessage;
+    }
+
+    public static SendMessage saveOrder(Long chatId, Location location) throws SQLException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setParseMode(ParseMode.MARKDOWN);
+        sendMessage.setChatId(chatId.toString());
+
+        Response<User> response = userService.findByChat_Id(chatId);
+        if (response != null) {
+            User user = response.getObject();
+            user.setBotState(BotState.ORDER_SENT);
+            user.setCurrentLatitude(location.getLatitude());
+            user.setCurrentLongitude(location.getLongitude());
+            userService.update(user);
+        } else {
+            sendMessage.setText("USER NOT FOUND");
+            return sendMessage;
+        }
+        Response<Cart> cartResponse = cartService.findByUserId(response.getObject().getId());
+        if(cartResponse == null) {
+            sendMessage.setText("CART NOT FOUND");
+            return sendMessage;
+        }
+        cartService.removeAll(cartResponse.getObject().getId());
+        return null;
     }
 }

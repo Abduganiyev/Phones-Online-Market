@@ -1,4 +1,4 @@
-package services.implement;
+package repository.implement;
 
 import dto.Response;
 import model.Cart;
@@ -44,6 +44,14 @@ public class CartRepositoryImp implements CartRepository {
             return new Response<>(true,"",new Cart(resultSet.getLong("id"),
                     resultSet.getLong("user_id")));
         }
+        return null;
+    }
+
+    @Override
+    public Response<Cart> removeAll(Long id) throws SQLException {
+        String DELETE_ALL_BY_CART_ID = "DELETE FROM order_cart WHERE cart_id = " + id;
+        PreparedStatement statement = connection.prepareStatement(DELETE_ALL_BY_CART_ID);
+        statement.executeUpdate();
         return null;
     }
 }

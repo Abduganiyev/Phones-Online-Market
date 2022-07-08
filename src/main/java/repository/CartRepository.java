@@ -11,4 +11,5 @@ public interface CartRepository {
     Response<List<Cart>> findAll();
     Response<Cart> findById(Long id);
     Response<Cart> findByUserId(Long id) throws SQLException;
+    Response<Cart> removeAll(Long id) throws SQLException;
 }

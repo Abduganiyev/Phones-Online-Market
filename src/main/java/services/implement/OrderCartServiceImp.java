@@ -1,5 +1,6 @@
 package services.implement;
 
+import dto.OrderCartDto;
 import dto.Response;
 import model.OrderCart;
 import repository.OrderCartRepository;
@@ -31,5 +32,11 @@ public class OrderCartServiceImp implements OrderCartService {
     public Response<OrderCart> findByCartAndProduct(Long id, long productId) {
         orderCartRepository.findByCartAndProduct(id,productId);
         return null;
+    }
+
+    @Override
+    public Response<List<OrderCartDto>> findAllByCartId(Long cartId) throws SQLException {
+        Response<List<OrderCartDto>> response = orderCartRepository.findAllByCartId(cartId);
+        return response;
     }
 }

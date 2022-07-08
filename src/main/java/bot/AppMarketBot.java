@@ -4,7 +4,10 @@ import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Contact;
+import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import util.BotMenu;
@@ -32,15 +35,29 @@ public class AppMarketBot extends TelegramLongPollingBot {
                 String text = message.getText();
                 switch (text) {
                     case BotMenu.START:
-                        System.out.println(update.getMessage().getFrom());
+                        System.out.println(update.getMessage());
                         sendMessage = BotService.start(update);
                         break;
                     case BotMenu.MENU:
+                        System.out.println(update.getMessage());
                         sendMessage = BotService.menu(message.getChatId());
                         break;
+                    case BotMenu.CART:
+                        System.out.println(update.getMessage());
+                        sendMessage = BotService.showCart(message.getChatId());
                     default:
 
                 }
+            } else if (message.hasContact()) {
+                Contact contact = message.getContact();
+
+                sendMessage = BotService.getAskCurrentLocation(message.getChatId(), contact);
+                execute(sendMessage);
+            } else if (message.hasLocation()) {
+                Location location = message.getLocation();
+                location.getLongitude();
+                location.getLongitude();
+                sendMessage = BotService.saveOrder(message.getChatId(), location);
             }
 
             execute(sendMessage);
@@ -67,9 +84,29 @@ public class AppMarketBot extends TelegramLongPollingBot {
                 SendMessage sendMessage = BotService.addProductToCart(message, productId , amount);
 
                 execute(sendMessage);
+
+                //delete old message
+                DeleteMessage deleteMessage = new DeleteMessage(
+                        message.getChatId().toString(),
+                        message.getMessageId()
+                );
+
+
+                execute(deleteMessage);
+            } else if (data.contains("send_order")) {
+                SendMessage sendMessage = BotService.orderCommit(message);
+
+                execute(sendMessage);
+
+                //delete old message
+                DeleteMessage deleteMessage = new DeleteMessage(
+                        message.getChatId().toString(),
+                        message.getMessageId()
+                );
+
+
+                execute(deleteMessage);
             }
-
-
 
         }
     }
