@@ -4,6 +4,7 @@ import dto.OrderCartDto;
 import dto.Response;
 import enums.BotState;
 import enums.OrderCartStatus;
+import enums.OrderStatus;
 import enums.Role;
 import model.*;
 import model.User;
@@ -34,6 +35,7 @@ public class BotService {
     static ProductService productService = new ProductServiceImp();
     static CartService cartService = new CartServiceImp();
     static OrderCartService orderCartService = new OrderCartServiceImp();
+    static OrderService orderService = new OrderServiceImp();
     // Register if new User
     public static SendMessage start(Update update) throws SQLException {
         registerUser(update);
@@ -474,8 +476,6 @@ public class BotService {
             return sendMessage;
         }
 
-        // TODO: 05.07.2022 User ga contact dagi Telefon raqamini save qilib qo'yish
-
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
 
@@ -514,7 +514,18 @@ public class BotService {
             sendMessage.setText("CART NOT FOUND");
             return sendMessage;
         }
+        Response<Double> doubleResponse = orderCartService.getSum(cartResponse.getObject().getId());
+
+        if (orderService.findByUserId(response.getObject().getId()) != null) {
+            Response<Order> saveOrder = orderService.save(new Order(doubleResponse.getObject(), OrderStatus.NEW, response.getObject().getId()));
+
+            Response<OrderDetail> orderDetailResponse = orderService.saveDetail(saveOrder.getObject().getId(), cartResponse.getObject().getId());
+        } else {
+            return null;
+        }
+        orderCartService.findAllByCartIdAndDelete(cartResponse.getObject().getId());
         cartService.removeAll(cartResponse.getObject().getId());
+
         return null;
     }
 }

@@ -39,4 +39,16 @@ public class OrderCartServiceImp implements OrderCartService {
         Response<List<OrderCartDto>> response = orderCartRepository.findAllByCartId(cartId);
         return response;
     }
+
+    @Override
+    public Response<OrderCart> findAllByCartIdAndDelete(Long id) throws SQLException {
+        Response<OrderCart> response = orderCartRepository.findAllByCartIdAndDelete(id);
+        return response;
+    }
+
+    @Override
+    public Response<Double> getSum(Long id) throws SQLException {
+        Response<Double> response = orderCartRepository.getSum(id);
+        return response;
+    }
 }

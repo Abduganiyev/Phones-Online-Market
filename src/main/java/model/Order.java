@@ -16,4 +16,10 @@ public class Order {
     private OrderStatus status;
     private Long userId;
     private LocalDateTime created_at;
+
+    public Order(Double totalPrice, OrderStatus status, Long userId) {
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.userId = userId;
+    }
 }

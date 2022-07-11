@@ -1,4 +1,4 @@
-package model;
+package dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,15 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetail {
+public class OrderDetailDto {
     private Long id;
     private Long cartId;
-    private Long productId;
     private Integer amount;
     private Double totalPrice;
+
+
+    private String productName;
+    private Double productPrice;
+
     private LocalDateTime created_at;
 }

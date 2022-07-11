@@ -2,10 +2,10 @@ package repository.implement;
 
 import dto.OrderCartDto;
 import dto.Response;
-import enums.OrderCartStatus;
 import model.OrderCart;
 import repository.OrderCartRepository;
 
+import javax.ws.rs.GET;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,5 +77,31 @@ public class OrderCartRepositoryImp implements OrderCartRepository {
         }
 
         return new Response<>(true,"",orderCarts);
+    }
+
+    @Override
+    public Response<OrderCart> findAllByCartIdAndDelete(Long id) throws SQLException {
+        String UPDATE_STATUS_OF_DELETED = "UPDATE order_cart SET deleted = true WHERE cart_id" + id;
+        PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_OF_DELETED);
+        statement.executeUpdate();
+        return null;
+    }
+
+    @Override
+    public Response<Double> getSum(Long id) throws SQLException {
+        String GET_SUM = "SELECT sum(order_cart.total_price) result FROM order_cart where cart_id = " + id;
+        PreparedStatement statement = connection.prepareStatement(GET_SUM);
+        ResultSet resultSet = statement.executeQuery();
+
+        Double sum = null;
+        if (resultSet.next()) {
+            try {
+                sum = Double.parseDouble(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new Response<>(true,"",sum);
     }
 }
