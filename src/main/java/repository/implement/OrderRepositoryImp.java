@@ -2,6 +2,7 @@ package repository.implement;
 
 import dto.OrderCartDto;
 import dto.Response;
+import enums.OrderStatus;
 import model.Order;
 import model.OrderDetail;
 import repository.OrderRepository;
@@ -26,9 +27,16 @@ public class OrderRepositoryImp implements OrderRepository {
         statement.setString(3,order.getStatus().name());
         statement.executeUpdate();
 
-        String SELECT_LAST_ORDER = "";
+        String SELECT_LAST_ORDER = "SELECT * FROM \"order\" ORDER BY created_at DESC";
+        PreparedStatement statement2 = connection.prepareStatement(SELECT_LAST_ORDER);
+        ResultSet resultSet = statement2.executeQuery();
+        if (resultSet.next()) {
+            return new Response<>(true,"",new Order(resultSet.getLong("id"),
+                    resultSet.getDouble("total_price"),OrderStatus.valueOf(resultSet.getString("status")),
+                    resultSet.getLong("user_id"),resultSet.getTimestamp("created_at").toLocalDateTime()));
+        }
 
-        return new Response<>(true,"",order);
+        return new Response<>(false,"",null);
     }
 
     @Override
@@ -47,6 +55,20 @@ public class OrderRepositoryImp implements OrderRepository {
             statement2.executeUpdate();
         }
 
+        return null;
+    }
+
+    @Override
+    public Response<Order> findByUserId(Long id) throws SQLException {
+        String SELECT_USER_BY_ID = "SELECT * FROM \"order\" WHERE user_id =" + id;
+        PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            return new Response<>(true,"",new Order(resultSet.getLong("id"),resultSet.getDouble("total_price"),
+                    OrderStatus.valueOf(resultSet.getString("status")),
+                    resultSet.getLong("user_id"),resultSet.getTimestamp("created_at").toLocalDateTime()));
+        }
         return null;
     }
 }

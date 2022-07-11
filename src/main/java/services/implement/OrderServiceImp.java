@@ -25,6 +25,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public Response<Order> findByUserId(Long id) throws SQLException {
-        return null;
+        Response<Order> response = orderRepository.findByUserId(id);
+        return response;
     }
 }

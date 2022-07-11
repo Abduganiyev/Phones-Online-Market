@@ -49,7 +49,7 @@ public class CartRepositoryImp implements CartRepository {
 
     @Override
     public Response<Cart> removeAll(Long id) throws SQLException {
-        String DELETE_ALL_BY_CART_ID = "DELETE FROM order_cart WHERE cart_id = " + id;
+        String DELETE_ALL_BY_CART_ID = "DELETE FROM cart WHERE id = " + id;
         PreparedStatement statement = connection.prepareStatement(DELETE_ALL_BY_CART_ID);
         statement.executeUpdate();
         return null;

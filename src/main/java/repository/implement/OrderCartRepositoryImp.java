@@ -81,7 +81,7 @@ public class OrderCartRepositoryImp implements OrderCartRepository {
 
     @Override
     public Response<OrderCart> findAllByCartIdAndDelete(Long id) throws SQLException {
-        String UPDATE_STATUS_OF_DELETED = "UPDATE order_cart SET deleted = true WHERE cart_id" + id;
+        String UPDATE_STATUS_OF_DELETED = "UPDATE order_cart SET deleted = true WHERE cart_id = " + id;
         PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_OF_DELETED);
         statement.executeUpdate();
         return null;

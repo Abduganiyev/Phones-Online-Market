@@ -516,15 +516,22 @@ public class BotService {
         }
         Response<Double> doubleResponse = orderCartService.getSum(cartResponse.getObject().getId());
 
-        if (orderService.findByUserId(response.getObject().getId()) != null) {
+        if (orderService.findByUserId(response.getObject().getId()) == null) {
             Response<Order> saveOrder = orderService.save(new Order(doubleResponse.getObject(), OrderStatus.NEW, response.getObject().getId()));
 
-            Response<OrderDetail> orderDetailResponse = orderService.saveDetail(saveOrder.getObject().getId(), cartResponse.getObject().getId());
+            orderService.saveDetail(saveOrder.getObject().getId(), cartResponse.getObject().getId());
+
+            orderCartService.findAllByCartIdAndDelete(cartResponse.getObject().getId());
+            cartService.removeAll(cartResponse.getObject().getId());
         } else {
-            return null;
+            Response<Order> byUserId = orderService.findByUserId(response.getObject().getId());
+            orderService.saveDetail(byUserId.getObject().getId(), cartResponse.getObject().getId());
+
+            orderCartService.findAllByCartIdAndDelete(cartResponse.getObject().getId());
+
+            // TODO: 11.07.2022 cartani ochirish dagi muammoni xal qiliw kereak
+            cartService.removeAll(cartResponse.getObject().getId());
         }
-        orderCartService.findAllByCartIdAndDelete(cartResponse.getObject().getId());
-        cartService.removeAll(cartResponse.getObject().getId());
 
         return null;
     }
